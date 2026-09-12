@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-paper: #faf8f4;
+  --color-surface: #ffffff;
+  --color-ink: #241f1c;
+  --color-muted: #7a7168;
+  --color-line: #e4ded4;
+  --color-maroon: #7a2e3a;
+  --color-maroon-dark: #5e2129;
+  --color-sage: #3f7a57;
+  --color-amber: #b8860b;
+}
+
+.dark {
+  --color-paper: #1b1714;
+  --color-surface: #24201c;
+  --color-ink: #f2ece4;
+  --color-muted: #a79e92;
+  --color-line: #3a342d;
+  --color-maroon: #d98a96;
+  --color-maroon-dark: #c97682;
+  --color-sage: #6fbf8f;
+  --color-amber: #e0ae4b;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-maroon);
+  outline-offset: 2px;
+}
