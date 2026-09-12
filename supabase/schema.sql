@@ -20,6 +20,7 @@ create table if not exists id_orders (
 create index if not exists id_orders_date_bought_idx on id_orders (date_bought desc);
 
 -- Single-row settings table, currently just the price per ID used to
+--------------
 -- calculate the Total column in the UI.
 create table if not exists app_settings (
   id int primary key default 1,
