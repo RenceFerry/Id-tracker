@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { getSupabaseForRequest } from "@/lib/supabaseRequest";
 import type { NewIdOrder } from "@/types/order";
+import { FilterParams } from "@/types/filters";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -18,7 +19,7 @@ export async function GET(req: NextRequest) {
   let query = supabase
     .from("id_orders")
     .select("*", { count: "exact" })
-    .order("date_bought", { ascending: false })
+    .order("student_name", { ascending: true })
     .range(from, to);
 
   if (q) {
@@ -30,6 +31,36 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  const paidParam = searchParams.get("paid"); // e.g. "true" | "false" | null
+  if (paidParam !== null) {
+    query = query.eq("paid", paidParam === "true");
+  }
+
+  const releasedParam = searchParams.get("released");
+  if (releasedParam !== null) {
+    query = query.eq("released", releasedParam === "true");
+  }
+
+  const typeParam = searchParams.get('type');
+  if (typeParam !== null) {
+    query = query.eq('idType', typeParam);
+  }
+
+  const [ dateOpParam, dateValParam ] = [searchParams.get('op'), searchParams.get('val')];
+  if (dateOpParam && dateValParam) {
+    switch (dateOpParam) {
+      case 'GT': 
+        query = query.gt("date_bought", dateValParam);
+        break;
+      case 'LT': 
+        query = query.lt("date_bought", dateValParam);
+        break;
+      case 'EQ': 
+        query = query.eq("date_bought", dateValParam);
+        break;
+    }
+  }
+
   const { data, error, count } = await query;
 
   if (error) {
@@ -38,7 +69,6 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({
     orders: data,
-    total: count ?? 0,
     page,
     pageSize,
     totalPages: Math.max(1, Math.ceil((count ?? 0) / pageSize)),

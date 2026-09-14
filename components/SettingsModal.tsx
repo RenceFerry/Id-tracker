@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface SettingsModalProps {
   open: boolean;
@@ -15,21 +15,24 @@ export default function SettingsModal({
   onSave,
   onClose,
 }: SettingsModalProps) {
-  const [price, setPrice] = useState(pricePerId);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   if (!open) return null;
 
   async function handleSave() {
-    if (Number.isNaN(price) || price < 0) {
+    const input = inputRef.current;
+    if (!input) return;
+
+    if (Number.isNaN(parseInt(input.value)) || parseInt(input.value) < 0) {
       setError("Enter a valid, non-negative price.");
       return;
     }
     setSaving(true);
     setError(null);
     try {
-      await onSave(price);
+      await onSave(parseInt(input.value));
       onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save price.");
@@ -47,12 +50,12 @@ export default function SettingsModal({
             Price per ID (₱)
           </label>
           <input
+            ref={inputRef}
             type="number"
             min={0}
             step="0.01"
             className="w-full border border-line bg-paper px-3 py-2 text-sm text-ink focus:bg-surface transition-colors"
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
+            defaultValue={pricePerId}
           />
           <p className="text-xs text-muted mt-1">
             Used to calculate the Total column in the registry table.

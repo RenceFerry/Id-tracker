@@ -2,8 +2,10 @@
 
 import type { IdOrder } from "@/types/order";
 import { formatCurrency } from "@/lib/format";
+import { PAGE_SIZE } from "@/lib/constants";
 
 interface OrderTableProps {
+  page: number;
   orders: IdOrder[];
   pricePerId: number;
   canEdit: boolean;
@@ -33,6 +35,7 @@ function StatusPill({
 
 export default function OrderTable({
   orders,
+  page,
   pricePerId,
   canEdit,
   onEdit,
@@ -63,9 +66,9 @@ export default function OrderTable({
           </tr>
         </thead>
         <tbody>
-          {orders.map((order) => (
+          {orders.map((order, i) => (
             <tr key={order.id} className="border-b border-line last:border-0">
-              <td className="px-4 py-3 text-ink">{order.student_name}</td>
+              <td className="px-4 py-3 text-ink">{(page - 1) * PAGE_SIZE + i + 1}. {order.student_name}</td>
               <td className="px-4 py-3 text-muted">
                 {order.year} &middot; {order.block}
               </td>

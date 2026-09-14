@@ -12,3 +12,9 @@ export interface IdOrder {
 }
 
 export type NewIdOrder = Omit<IdOrder, "id" | "created_at">;
+
+export type OrderStatType = {
+  orders: Pick<IdOrder, "quantity" | "paid" | "released" | "idType">[];
+  total: number;
+  error?: string;
+}
