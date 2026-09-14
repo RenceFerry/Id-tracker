@@ -310,7 +310,7 @@ export default function Home() {
                     value={filter?.type || ''}
                     onChange={(e) => setFilter((f) => {
                       return {
-                        ...(f ? f : {}), type: 'BMMA' 
+                        ...(f ? f : {}), type: e.target.value as 'BSIT' | 'BMMA' 
                       }
                     })}
                   >
