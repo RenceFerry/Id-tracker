@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginModal() {
   const { signIn } = useAuth();
@@ -10,6 +11,7 @@ export default function LoginModal() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -23,7 +25,7 @@ export default function LoginModal() {
     }
     setEmail("");
     setPassword("");
-    
+    router.push('/');
   }
 
   const inputClass =
