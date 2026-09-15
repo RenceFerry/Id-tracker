@@ -37,7 +37,6 @@ export default function Home() {
   const [filter, setFilter] = useState<null | FilterType>(null);
   const [hideFilterOps, setHideFilterOps] = useState(true);
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [debouncedFilter, setDebouncedFilter] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalEntries, setTotalEntries] = useState(0);
@@ -131,7 +130,7 @@ export default function Home() {
           MA: typeMA,
           IT: typeIT
         }
-      })
+      });
       
       setErrorStat(null);
     } catch (err) {
@@ -163,6 +162,7 @@ export default function Home() {
     if (!res.ok) throw new Error(json.error ?? "Failed to add entry");
     // Reload so the new row reflects current search/sort/pagination correctly.
     await loadOrders(1);
+    await loadStats();
     setPage(1);
   }
 
@@ -174,6 +174,7 @@ export default function Home() {
     const json = await res.json();
     if (!res.ok) throw new Error(json.error ?? "Failed to save changes");
     setOrders((prev) => prev.map((o) => (o.id === id ? json.order : o)));
+    await loadStats();
   }
 
   async function handleConfirmDelete() {
@@ -186,7 +187,8 @@ export default function Home() {
     if (!res.ok) {
       setOrders(prevOrders);
     } else {
-      loadOrders();
+      await loadOrders();
+      await loadStats();
     }
   }
 

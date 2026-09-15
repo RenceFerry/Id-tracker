@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { getSupabaseForRequest } from "@/lib/supabaseRequest";
 import type { NewIdOrder } from "@/types/order";
-import { FilterParams } from "@/types/filters";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);

@@ -1,16 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export async function GET(req: NextRequest) {
-  const query = supabase
-    .from("id_orders")
-    .select("quantity, paid, released, idType", { count: "exact" })
+export const revalidate = 0;
 
-  const { data, error, count } = await query;
+export async function GET() {
+  const { data, error, count } = await supabase
+    .from("id_orders")
+    .select("quantity, idType, released, paid", { count: "exact" })
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+
+  console.log(data, count);
 
   return NextResponse.json({
     orders: data,
