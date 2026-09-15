@@ -43,7 +43,6 @@ export default function Home() {
 
   const [pricePerId, setPricePerId] = useState(0);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
 
   const [editingOrder, setEditingOrder] = useState<IdOrder | null>(null);
   const [pendingDelete, setPendingDelete] = useState<IdOrder | null>(null);
@@ -223,7 +222,7 @@ export default function Home() {
               </button>
             )}
             {!authLoading && (
-              isAdmin ? (
+              isAdmin && (
                 <button
                   onClick={() => signOut()}
                   className="border border-line px-3 py-1.5 text-xs text-ink hover:bg-line/40 transition-colors"
@@ -231,14 +230,7 @@ export default function Home() {
                 >
                   Sign out
                 </button>
-              ) : (
-                <button
-                  onClick={() => setLoginOpen(true)}
-                  className="border border-line px-3 py-1.5 text-xs text-ink hover:bg-line/40 transition-colors"
-                >
-                  Admin sign in
-                </button>
-              )
+              ) 
             )}
           </div>
         </header>
@@ -471,8 +463,6 @@ export default function Home() {
           />
         </>
       )}
-
-      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </main>
   );
 }

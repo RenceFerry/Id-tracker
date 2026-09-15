@@ -2,20 +2,14 @@
 
 import { useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
+import Link from "next/link";
 
-interface LoginModalProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-export default function LoginModal({ open, onClose }: LoginModalProps) {
+export default function LoginModal() {
   const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  if (!open) return null;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,7 +23,7 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
     }
     setEmail("");
     setPassword("");
-    onClose();
+    
   }
 
   const inputClass =
@@ -72,10 +66,11 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
         <div className="flex justify-end gap-3 pt-2">
           <button
             type="button"
-            onClick={onClose}
             className="px-4 py-2 text-sm text-muted hover:text-ink transition-colors"
           >
-            Cancel
+            <Link href={'/'}>
+              Cancel
+            </Link>
           </button>
           <button
             type="submit"
